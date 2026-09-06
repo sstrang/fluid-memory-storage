@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.1
+Date: 2026-09-06
+  Compatibility:
+    - Added Nullius support. When Nullius is active, the fluid-memory-unit
+      recipe and technology are re-anchored into the Nullius tech tree (late
+      Electrical era: thermal-storage-1, plumbing-4, optimization-1,
+      computation) using Nullius-era ingredients (medium tank 1, memory
+      circuit, efficiency module 1). Without Nullius the mod is unchanged.
+---------------------------------------------------------------------------------------------------
 Version: 1.8.0
 Date: 2026-08-07
   Compatibility:

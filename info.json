@@ -1,6 +1,6 @@
 {
   "name": "fluid-memory-storage",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "title": "Fluid Memory Storage",
   "author": "notnotmelon",
   "homepage": "https://github.com/notnotmelon/fluid-memory-storage",
@@ -10,6 +10,7 @@
     "base",
     "? deep-storage-unit",
     "(?) PickerDollies",
+    "(?) nullius",
     "! logistic-memory-units"
   ]
 }
