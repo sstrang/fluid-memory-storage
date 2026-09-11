@@ -100,7 +100,8 @@ local function update_unit(unit_data, unit_number, force)
 
 	local inventory_count = entity.get_fluid_count(item)
 	if inventory_count > comfortable then
-		local amount_removed = entity.remove_fluid {name = item, amount = inventory_count - comfortable}
+		local removed = entity.remove_fluid(1, inventory_count - comfortable)
+		local amount_removed = removed and removed.amount or 0
 		unit_data.temperature = combine_tempatures(unit_data.count, unit_data.temperature, amount_removed, entity.get_fluid(1).temperature)
 		unit_data.count = unit_data.count + amount_removed
 		inventory_count = inventory_count - amount_removed
@@ -290,7 +291,8 @@ local function pre_mined(event)
 
 		if in_inventory > 0 then
 			local temperature = entity.get_fluid(1).temperature
-			local new_count = unit_data.count + entity.remove_fluid {name = item, amount = in_inventory}
+			local removed = entity.remove_fluid(1, in_inventory)
+			local new_count = unit_data.count + (removed and removed.amount or 0)
 			unit_data.temperature = combine_tempatures(unit_data.count, unit_data.temperature, in_inventory, temperature)
 			unit_data.count = new_count
 		end

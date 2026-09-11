@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.3
+Date: 2026-09-11
+  Bugfixes:
+    - Fixed crash while a unit was filling: 2.1 changed remove_fluid to take
+      (index, amount) and return the Fluid removed instead of a count. Both
+      call sites updated; insert_fluid/get_fluid_count were unchanged.
+---------------------------------------------------------------------------------------------------
 Version: 1.8.2
 Date: 2026-09-11
   Bugfixes:
