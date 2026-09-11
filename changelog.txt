@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.2
+Date: 2026-09-11
+  Bugfixes:
+    - Fixed crash on placing the Fluid Memory Unit ("LuaEntity doesn't contain
+      key fluidbox"). Factorio 2.1 removed the LuaEntity::fluidbox property;
+      runtime code now uses the per-index replacements (get_fluid,
+      set_fluid, get_fluid_capacity, set_fluid_filter).
+---------------------------------------------------------------------------------------------------
 Version: 1.8.1
 Date: 2026-09-06
   Compatibility:

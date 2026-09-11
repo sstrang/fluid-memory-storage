@@ -34,7 +34,7 @@ local function update_gui(gui, fresh_gui)
 			}
 			local temperature = 0
 			if inventory_count ~= 0 then
-				temperature = combine_tempatures(unit_data.count, unit_data.temperature, inventory_count, entity.fluidbox[1].temperature)
+				temperature = combine_tempatures(unit_data.count, unit_data.temperature, inventory_count, entity.get_fluid(1).temperature)
 			end
 			content_flow.temperature.caption = {
 				"",

@@ -62,8 +62,9 @@ local function update_unit_exterior(unit_data, inventory_count)
 	local total_count = unit_data.count + inventory_count
 
 	if inventory_count > 0 then
-		local temperature = combine_tempatures(unit_data.count, unit_data.temperature, inventory_count, entity.fluidbox[1].temperature)
-		entity.fluidbox[1].temperature = temperature
+		local current_fluid = entity.get_fluid(1)
+		local temperature = combine_tempatures(unit_data.count, unit_data.temperature, inventory_count, current_fluid.temperature)
+		entity.set_fluid(1, {name = unit_data.item, amount = inventory_count, temperature = temperature})
 		unit_data.temperature = temperature
 	end
 
@@ -73,10 +74,10 @@ local function update_unit_exterior(unit_data, inventory_count)
 end
 
 local function detect_item(unit_data)
-	local fluidbox = unit_data.entity.fluidbox
-	local fluid = fluidbox[1]
+	local entity = unit_data.entity
+	local fluid = entity.get_fluid(1)
 	if fluid then
-		fluidbox.set_filter(1, {name = fluid.name, force = true})
+		entity.set_fluid_filter(1, {fluid = fluid.name})
 		render_fluid_animation(fluid.name, unit_data.entity)
 		unit_data.item = fluid.name
 		unit_data.temperature = fluid.temperature
@@ -100,7 +101,7 @@ local function update_unit(unit_data, unit_number, force)
 	local inventory_count = entity.get_fluid_count(item)
 	if inventory_count > comfortable then
 		local amount_removed = entity.remove_fluid {name = item, amount = inventory_count - comfortable}
-		unit_data.temperature = combine_tempatures(unit_data.count, unit_data.temperature, amount_removed, entity.fluidbox[1].temperature)
+		unit_data.temperature = combine_tempatures(unit_data.count, unit_data.temperature, amount_removed, entity.get_fluid(1).temperature)
 		unit_data.count = unit_data.count + amount_removed
 		inventory_count = inventory_count - amount_removed
 		changed = true
@@ -158,7 +159,7 @@ local function on_created(event)
 
 	local unit_data = {
 		entity = entity,
-		comfortable = 0.5 * entity.fluidbox.get_capacity(1),
+		comfortable = 0.5 * entity.get_fluid_capacity(1),
 		powersource = powersource,
 		combinator = combinator,
 		count = 0,
@@ -172,7 +173,7 @@ local function on_created(event)
 		unit_data.count = tags.count
 		unit_data.temperature = tags.temperature
 		unit_data.item = tags.name
-		entity.fluidbox.set_filter(1, {name = tags.name, force = true})
+		entity.set_fluid_filter(1, {fluid = tags.name})
 		render_fluid_animation(tags.name, entity)
 		update_unit(unit_data, entity.unit_number, true)
 	else
@@ -234,7 +235,7 @@ script.on_event(defines.events.on_entity_cloned, function(event)
 
 	if item then
 		render_fluid_animation(item, destination)
-		destination.fluidbox.set_filter(1, {name = item, force = true})
+		destination.set_fluid_filter(1, {fluid = item})
 		update_unit(storage.units[destination.unit_number], destination.unit_number, true)
 	end
 end)
@@ -288,7 +289,7 @@ local function pre_mined(event)
 		local in_inventory = entity.get_fluid_count(item)
 
 		if in_inventory > 0 then
-			local temperature = entity.fluidbox[1].temperature
+			local temperature = entity.get_fluid(1).temperature
 			local new_count = unit_data.count + entity.remove_fluid {name = item, amount = in_inventory}
 			unit_data.temperature = combine_tempatures(unit_data.count, unit_data.temperature, in_inventory, temperature)
 			unit_data.count = new_count
